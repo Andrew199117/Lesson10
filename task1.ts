@@ -9,19 +9,15 @@ enum FigureType {
 
 // Абстрактный класс Figure
 abstract class Figure {
-  // Добавление защитного свойства type при создании класса
   constructor(protected readonly type: string) {}
 
-  // Добавление публичного метода получения type
   getType(): string {
     return this.type;
   }
 
-  // Добавление публичных абстрактный методов для фигур - получение площади и периметра
   abstract getArea(): number;
   abstract getPerimeter(): number;
 
-  // Добавление публичного метода описание класса
   getDescription(): string {
     return this.constructor.name;
   }
@@ -29,76 +25,116 @@ abstract class Figure {
 
 // Класс Square (квадрат)
 class Square extends Figure {
-  //  Добавление приватного свойства side
   constructor(private readonly side: number) {
-    // Указание типа при создании класса
     super(FigureType.Square);
+
+    if (side <= 0) {
+      throw new Error("side must be greater than 0");
+    }
   }
 
-  // Получение площади
   getArea(): number {
-    return 0;
+    return this.side * this.side;
   }
 
-  // Получение периметра
   getPerimeter(): number {
-    return 0;
+    return this.side * 4;
   }
 
-  // Получение описания
   getDescription(): string {
-    return "";
+    return `Square with side ${this.side}`;
   }
 }
 
 // Класс Rectangle (прямоугольник)
 class Rectangle extends Figure {
-  //  Добавление приватных свойств ширина и высоты
   constructor(
     private readonly width: number,
     private readonly height: number,
   ) {
-    // Указание типа при создании класса
     super(FigureType.Rectangle);
+
+    if (width <= 0) {
+      throw new Error("width must be greater than 0");
+    }
+
+    if (height <= 0) {
+      throw new Error("height must be greater than 0");
+    }
   }
 
-  // Получение площади
   getArea(): number {
-    return 0;
+    return this.width * this.height;
   }
 
-  // Получение периметра
   getPerimeter(): number {
-    return 0;
+    return (this.width + this.height) * 2;
   }
 
-  // Получение описания
   getDescription(): string {
-    return "";
+    return `Rectangle with width ${this.width} and height ${this.height}`;
   }
 }
 
-//Класс Triangle
+// Класс Triangle (треугольник)
+class Triangle extends Figure {
+  constructor(
+    private readonly side1: number,
+    private readonly side2: number,
+    private readonly side3: number,
+  ) {
+    super(FigureType.Triangle);
+
+    if (side1 <= 0) {
+      throw new Error("side1 must be greater than 0");
+    }
+
+    if (side2 <= 0) {
+      throw new Error("side2 must be greater than 0");
+    }
+
+    if (side3 <= 0) {
+      throw new Error("side3 must be greater than 0");
+    }
+  }
+
+  getPerimeter(): number {
+    return this.side1 + this.side2 + this.side3;
+  }
+
+  getArea(): number {
+    const p = this.getPerimeter() / 2;
+
+    return Math.sqrt(p * (p - this.side1) * (p - this.side2) * (p - this.side3));
+  }
+
+  getDescription(): string {
+    return `Triangle with side1 ${this.side1}, side2 ${this.side2} and side3 ${this.side3}`;
+  }
+}
 
 // Пример использования
 const square = new Square(5);
-console.log(square.getArea()); // 25
-console.log(square.getPerimeter()); // 20
-console.log(square.getType()); // square
-console.log(square.getDescription()); // Square with side 5
+
+console.log(square.getArea());
+console.log(square.getPerimeter());
+console.log(square.getType());
+console.log(square.getDescription());
 
 console.log("-----------");
 
 const rectangle = new Rectangle(4, 6);
-console.log(rectangle.getArea()); // 24
-console.log(rectangle.getPerimeter()); // 20
-console.log(rectangle.getType()); // rectangle
-console.log(rectangle.getDescription()); // Rectangle with width 4 and height 6
+
+console.log(rectangle.getArea());
+console.log(rectangle.getPerimeter());
+console.log(rectangle.getType());
+console.log(rectangle.getDescription());
 
 console.log("-----------");
 
-// const triangle = new Triangle(3, 4, 5);
-// console.log(triangle.getArea()); // 6
-// console.log(triangle.getPerimeter()); // 12
-// console.log(triangle.getType()); // triangle
-// console.log(triangle.getDescription()); // Triangle with side1 3, side2 4 and side3 5
+const triangle = new Triangle(3, 4, 5);
+
+console.log(triangle.getArea());
+console.log(triangle.getPerimeter());
+console.log(triangle.getType());
+console.log(triangle.getDescription());
